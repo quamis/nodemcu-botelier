@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "Command.h"
+#include "Response.h"
 
 #define WIFI_SSID "xxxx";
 #define WIFI_PASSWORD "xxxx";
@@ -38,7 +39,9 @@ class CommandQueue {
 };
 
 
+
 CommandQueue commandQueue;
+ResponseQueue responseQueue;
 
 int freq = 1000;
 float mul = 0.75;
@@ -55,11 +58,12 @@ void setup(void) {
   pinMode(BUILTIN_LED, OUTPUT); 
 
   Command_getSysInfo c;
+  c.execute(responseQueue);
   commandQueue.queue.push(c);
   
+  // initialize random seed 
   randomSeed(analogRead(D0));
   
-
 
   wifi.connect();
 

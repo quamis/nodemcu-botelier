@@ -2,6 +2,9 @@
 #define _NODE_BOTELIERLIB_RESPONSE_
 
 #include <Arduino.h>
+#include <queue>
+
+
 
 class Response {
 };
@@ -13,5 +16,9 @@ class Response_sysInfo : public Response {
     char* uptime;
 };
 
+class ResponseQueue {
+  public:
+    std::queue<Response> queue;
+};
 
 #endif
