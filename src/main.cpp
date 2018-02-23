@@ -4,6 +4,7 @@
 #include <string.h>
 #include "Command.h"
 #include "Response.h"
+#include "Request.h"
 
 #define WIFI_SSID "xxxx";
 #define WIFI_PASSWORD "xxxx";
@@ -33,14 +34,7 @@ WIFI wifi;
 
 
 
-class CommandQueue {
-  public:
-    std::queue<Command> queue;
-};
-
-
-
-CommandQueue commandQueue;
+RequestQueue requestQueue;
 ResponseQueue responseQueue;
 
 int freq = 1000;
@@ -57,17 +51,16 @@ void setup(void) {
   pinMode(D4, OUTPUT); 
   pinMode(BUILTIN_LED, OUTPUT); 
 
-  Command_getSysInfo c;
-  c.execute(responseQueue);
-  commandQueue.queue.push(c);
+  Request_getSysInfo c;
+  requestQueue.queue.push(c);
+
+
   
   // initialize random seed 
   randomSeed(analogRead(D0));
   
 
   wifi.connect();
-
-  
 }
 
 void loop(void) {
@@ -96,3 +89,4 @@ void loop(void) {
     }
   }
 }
+
