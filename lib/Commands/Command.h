@@ -20,6 +20,7 @@ class Command_getSysInfo : public Command {
 
     using Command::execute;
     void execute(ResponseQueue responseQueue);
+
 };
 
 

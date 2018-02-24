@@ -2,6 +2,8 @@
 #include <queue>
 #include <stdarg.h>
 #include <string.h>
+
+#include "Utils.h"
 #include "Command.h"
 #include "Response.h"
 #include "Request.h"
@@ -9,15 +11,10 @@
 #define WIFI_SSID "xxxx";
 #define WIFI_PASSWORD "xxxx";
 
-// printf replacement
-void p(const char *fmt, ... ) {
-  char buf[256]; // resulting string limited in size
-  va_list args;
-  va_start (args, fmt );
-  vsnprintf(buf, 256, fmt, args);
-  va_end (args);
-  Serial.print(buf);
+extern "C" {
+  #include "user_interface.h"
 }
+
 
 class WIFI {
   public:
@@ -37,8 +34,6 @@ WIFI wifi;
 RequestQueue requestQueue;
 ResponseQueue responseQueue;
 
-int freq = 1000;
-float mul = 0.75;
 void setup(void) {
   Serial.begin(921600);
 
@@ -46,10 +41,8 @@ void setup(void) {
   p("************************************************************\n");
   p("Starting up Boutellier");
 
-  // queue.reset();
-  // queue.append();
-  pinMode(D4, OUTPUT); 
-  pinMode(BUILTIN_LED, OUTPUT); 
+  // pinMode(D4, OUTPUT); 
+  // pinMode(BUILTIN_LED, OUTPUT); 
 
   Request_getSysInfo c;
   requestQueue.queue.push(c);
@@ -64,29 +57,29 @@ void setup(void) {
 }
 
 void loop(void) {
-  delay(freq);
-  digitalWrite(D4, LOW);
-  digitalWrite(BUILTIN_LED, HIGH);
+  delay(250);
+  p("\nLooping, ram: %d\n", system_get_free_heap_size());
 
-  p("Looping");
-
-  delay(freq);                      
-  digitalWrite(D4, HIGH);  
-  digitalWrite(BUILTIN_LED, LOW);
-
-  freq = freq*mul;
-
-  if (freq<50) {
-    mul = 1/mul;
-    freq = 50;
+  if (!requestQueue.queue.empty()) {
+    p("Process queue, %d requests\n", requestQueue.queue.size());
+    requestQueue.executeQueue(responseQueue);
   }
-  if (freq>1000) {
-    mul = 1/mul;
-    freq = 1000;
 
-    if (random(100)<50) {
-      mul+= random(100)/1000;
+  if (!responseQueue.queue.empty()) {
+    String response;
+    while (!responseQueue.queue.empty()) {
+      Response &rs = responseQueue.queue.front();
+      response+= rs.toJson();
+
+      p(">> %s\n", response.c_str());
+      
+      responseQueue.queue.pop();
     }
   }
-}
 
+  while(random(100)<70) {
+    p("+push new elements\n");
+    Request_getSysInfo c;
+    requestQueue.queue.push(c);
+  }
+}

@@ -3,18 +3,23 @@
 
 #include <Arduino.h>
 #include <queue>
-
+#include <string.h>
 
 
 class Response {
+  public:
+    String toJson() { String s; return s; };
 };
 
 class Response_sysInfo : public Response {
   public:
-    char* time;
-    char* ip;
-    char* uptime;
+    String toJson();
+    time_t time = 0;
+    uint32_t free_heap_size = 0;
 };
+
+
+
 
 class ResponseQueue {
   public:
