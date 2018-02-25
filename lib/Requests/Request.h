@@ -26,6 +26,23 @@ class Request_getSysInfo : public Request {
 };
 
 
+#define _rq_LightOn_ 0x0011
+class Request_lightOn : public Request {
+  public:
+    Request_lightOn () { request = _rq_LightOn_; };
+
+    uint location = 0;
+};
+
+#define _rq_LightOff_ 0x0012
+class Request_lightOff : public Request {
+  public:
+    Request_lightOff () { request = _rq_LightOff_; };
+
+    uint location = 0;
+};
+
+
 
 
 
@@ -38,7 +55,7 @@ class RequestQueue {
   private:
     uint commandsExecuted = 0;
   public:
-    std::queue<Request> queue;
+    std::queue<Request *> queue;
     void executeQueue(ResponseQueue responseQueue);
 };
 

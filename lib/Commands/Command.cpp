@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include <sys/time.h>
+#include "stdexcept"
 #include "Utils.h"
 #include "Command.h"
 #include "Response.h"
 #include "Request.h"
-#include "Utils.h"
 
 extern "C" {
   #include "user_interface.h"
@@ -33,4 +33,26 @@ void Command_getSysInfo::execute(ResponseQueue responseQueue) {
     rs.free_heap_size = system_get_free_heap_size();
 
     responseQueue.queue.push(rs);
+}
+
+void Command_lightOn::execute(ResponseQueue responseQueue) {
+    switch (rq->location) {
+        case 1:
+            digitalWrite(BUILTIN_LED, LOW);
+        break;
+        case 2:
+            digitalWrite(D4, LOW);
+        break;
+    }
+}
+
+void Command_lightOff::execute(ResponseQueue responseQueue) {
+    switch (rq->location) {
+        case 1:
+            digitalWrite(BUILTIN_LED, HIGH);
+        break;
+        case 2:
+            digitalWrite(D4, HIGH);
+        break;
+    }
 }

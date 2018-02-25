@@ -41,11 +41,16 @@ void setup(void) {
   p("************************************************************\n");
   p("Starting up Boutellier");
 
-  // pinMode(D4, OUTPUT); 
-  // pinMode(BUILTIN_LED, OUTPUT); 
+  pinMode(D4, OUTPUT); 
+  digitalWrite(D4, HIGH);
 
+  pinMode(BUILTIN_LED, OUTPUT); 
+  digitalWrite(BUILTIN_LED, HIGH);
+
+  /*
   Request_getSysInfo c;
   requestQueue.queue.push(c);
+  */
 
 
   
@@ -57,7 +62,11 @@ void setup(void) {
 }
 
 void loop(void) {
-  delay(250);
+  delay(100);
+
+  
+
+
   p("\nLooping, ram: %d\n", system_get_free_heap_size());
 
   if (!requestQueue.queue.empty()) {
@@ -66,27 +75,56 @@ void loop(void) {
   }
 
   if (!responseQueue.queue.empty()) {
+    /*
     String response;
     while (!responseQueue.queue.empty()) {
       Response &rs = responseQueue.queue.front();
-      response+= rs.toJson();
+      response+= rs.toJsop("    +n();
 
       p(">> %s\n", response.c_str());
       
       responseQueue.queue.pop();
     }
+    */
   }
 
-  while(random(100)<70) {
-    p("+push new elements\n");
 
+// fill in request queue for next iteration
+  //p("+push new elements\n");
+  while(random(100)<30) {
     if (random(100)<25) {
-      Request_getHeartbeat c;
+      Request_getHeartbeat* c = new Request_getHeartbeat();
       requestQueue.queue.push(c);
+      p("  >    %s\n", "Request_getHeartbeat");
+    }
+    else if (random(100)<25) {
+      Request_lightOn* c = new Request_lightOn();
+      c->location = 1;
+      requestQueue.queue.push(c);
+      p("  >    %s, %d\n", "Request_lightOn", c->location);
+    }
+    else if (random(100)<25) {
+      Request_lightOn* c = new Request_lightOn();
+      c->location = 2;
+      requestQueue.queue.push(c);
+      p("  >    %s, %d\n", "Request_lightOn", c->location);
+    }
+    else if (random(100)<25) {
+      Request_lightOff* c = new Request_lightOff();
+      c->location = 1;
+      requestQueue.queue.push(c);
+      p("  >    %s, %d\n", "Request_lightOff", c->location);
+    }
+    else if (random(100)<25) {
+      Request_lightOff* c = new Request_lightOff();
+      c->location = 2;
+      requestQueue.queue.push(c);
+      p("  >    %s, %d\n", "Request_lightOff", c->location);
     }
     else {
-      Request_getSysInfo c;
+      Request_getSysInfo* c = new Request_getSysInfo();
       requestQueue.queue.push(c);
+      p("  >    %s\n", "Request_getSysInfo");
     }
   }
 }
