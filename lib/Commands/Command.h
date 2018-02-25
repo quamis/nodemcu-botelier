@@ -3,24 +3,25 @@
 
 #include <Arduino.h>
 #include "Response.h"
+#include "Request.h"
 
 class Command {
     public:
         Command() { };
         void execute(ResponseQueue responseQueue);
+};
 
-    protected:
-        const char* command;
 
+class Command_getHeartbeat : public Command {
+  public:
+    //using Command::execute;
+    void execute(ResponseQueue responseQueue, uint commandsExecuted);
 };
 
 class Command_getSysInfo : public Command {
   public:
-    Command_getSysInfo () { command = "getSysInfo"; };
-
     using Command::execute;
     void execute(ResponseQueue responseQueue);
-
 };
 
 

@@ -11,6 +11,12 @@ class Response {
     String toJson() { String s; return s; };
 };
 
+class Response_heartbeat : public Response {
+  public:
+    String toJson();
+    uint commandsExecuted = 0;
+};
+
 class Response_sysInfo : public Response {
   public:
     String toJson();

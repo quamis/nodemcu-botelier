@@ -79,7 +79,14 @@ void loop(void) {
 
   while(random(100)<70) {
     p("+push new elements\n");
-    Request_getSysInfo c;
-    requestQueue.queue.push(c);
+
+    if (random(100)<25) {
+      Request_getHeartbeat c;
+      requestQueue.queue.push(c);
+    }
+    else {
+      Request_getSysInfo c;
+      requestQueue.queue.push(c);
+    }
   }
 }

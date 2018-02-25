@@ -3,15 +3,22 @@
 #include "Utils.h"
 #include "Command.h"
 #include "Response.h"
+#include "Request.h"
 #include "Utils.h"
 
 extern "C" {
   #include "user_interface.h"
 }
 
-
 void Command::execute(ResponseQueue responseQueue) {
 }
+
+void Command_getHeartbeat::execute(ResponseQueue responseQueue, uint commandsExecuted) {
+    Response_heartbeat rs;
+    rs.commandsExecuted = commandsExecuted;
+    responseQueue.queue.push(rs);
+}
+
 
 void Command_getSysInfo::execute(ResponseQueue responseQueue) {
     // fill in something in the reponse
