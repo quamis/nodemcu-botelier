@@ -40,4 +40,34 @@ class Command_lightOff : public Command {
     Request_lightOff* rq = NULL;
 };
 
+
+class WifiAp {
+  public:
+    // @see https://github.com/esp8266/Arduino/blob/4897e0006b5b0123a2fa31f67b14a3fff65ce561/doc/esp8266wifi/scan-class.md
+    String SSID;
+    String encryptionType;
+    int32_t RSSI;
+    String BSSID;
+    int32_t channel;
+    bool isHidden;
+};
+
+class Command_getWifiList : public Command {
+  public:
+    using Command::execute;
+    void execute(ResponseQueue responseQueue);
+
+    std::queue<WifiAp *> networks;
+
+    ~Command_getWifiList() {
+      while (!networks.empty()) {
+        WifiAp *ap = networks.front();
+        networks.pop();
+        delete ap;
+      }
+    }
+};
+
+
+
 #endif

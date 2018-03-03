@@ -44,6 +44,13 @@ void RequestQueue::executeQueue(ResponseQueue responseQueue) {
             }
             break;
 
+            case _rq_getWifiList_: {
+                Command_getWifiList c;
+                c.execute(responseQueue);
+                p("  <  %s\n", "Command_getWifiList");
+            }
+            break;
+
             default:
                 p("<    unknown request! (0x%4x)\n", rq->request);
         }

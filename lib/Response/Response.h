@@ -24,6 +24,14 @@ class Response_sysInfo : public Response {
     uint32_t free_heap_size = 0;
 };
 
+class Response_getWifiList : public Response {
+  public:
+    String toJson();
+};
+
+
+
+
 
 
 

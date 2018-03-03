@@ -47,7 +47,7 @@ void setup(void) {
   pinMode(BUILTIN_LED, OUTPUT); 
   digitalWrite(BUILTIN_LED, HIGH);
 
-  /*
+  /*LOW
   Request_getSysInfo c;
   requestQueue.queue.push(c);
   */
@@ -62,7 +62,7 @@ void setup(void) {
 }
 
 void loop(void) {
-  delay(100);
+  delay(10);
 
   
 
@@ -89,13 +89,18 @@ void loop(void) {
   }
 
 
-// fill in request queue for next iteration
-  //p("+push new elements\n");
+  // fill in request queue for next iteration
+  // p("+push new elements\n");
   while(random(100)<30) {
     if (random(100)<25) {
       Request_getHeartbeat* c = new Request_getHeartbeat();
       requestQueue.queue.push(c);
       p("  >    %s\n", "Request_getHeartbeat");
+    }
+    if (random(100)<25) {
+      Request_getWifiList* c = new Request_getWifiList();
+      requestQueue.queue.push(c);
+      p("  >    %s\n", "Request_getWifiList");
     }
     else if (random(100)<25) {
       Request_lightOn* c = new Request_lightOn();

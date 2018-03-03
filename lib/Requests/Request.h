@@ -6,12 +6,23 @@
 #include "Response.h"
 #include <string.h>
 
+// base class
 class Request {
     public:
         Request() { };
         int request;
 
 };
+
+// queue class
+class RequestQueue {
+  private:
+    uint commandsExecuted = 0;
+  public:
+    std::queue<Request *> queue;
+    void executeQueue(ResponseQueue responseQueue);
+};
+
 
 #define _rq_getHeartbeat_ 0x0001
 class Request_getHeartbeat : public Request {
@@ -43,21 +54,13 @@ class Request_lightOff : public Request {
 };
 
 
-
-
-
-
-
-
-
-
-class RequestQueue {
-  private:
-    uint commandsExecuted = 0;
+#define _rq_getWifiList_ 0x0101
+class Request_getWifiList : public Request {
   public:
-    std::queue<Request *> queue;
-    void executeQueue(ResponseQueue responseQueue);
+    Request_getWifiList () { request = _rq_getWifiList_; };
 };
+
+
 
 
 #endif
