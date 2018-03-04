@@ -44,25 +44,17 @@ void setup(void) {
   pinMode(D4, OUTPUT); 
   digitalWrite(D4, HIGH);
 
+
   pinMode(BUILTIN_LED, OUTPUT); 
   digitalWrite(BUILTIN_LED, HIGH);
 
-  /*LOW
-  Request_getSysInfo c;
-  requestQueue.queue.push(c);
-  */
-
-
-  
+ 
   // initialize random seed 
   randomSeed(analogRead(D0));
-  
-
-  wifi.connect();
 }
 
 void loop(void) {
-  delay(10);
+  delay(100);
 
   
 
@@ -91,13 +83,14 @@ void loop(void) {
 
   // fill in request queue for next iteration
   // p("+push new elements\n");
+  
   while(random(100)<30) {
     if (random(100)<25) {
       Request_getHeartbeat* c = new Request_getHeartbeat();
       requestQueue.queue.push(c);
       p("  >    %s\n", "Request_getHeartbeat");
     }
-    if (random(100)<25) {
+    else if (random(100)<25) {
       Request_getWifiList* c = new Request_getWifiList();
       requestQueue.queue.push(c);
       p("  >    %s\n", "Request_getWifiList");
@@ -105,14 +98,16 @@ void loop(void) {
     else if (random(100)<25) {
       Request_lightOn* c = new Request_lightOn();
       c->location = 1;
+      c->power = random(0, 255);
       requestQueue.queue.push(c);
-      p("  >    %s, %d\n", "Request_lightOn", c->location);
+      p("  >    %s, %d, %d\n", "Request_lightOn", c->location, c->power);
     }
     else if (random(100)<25) {
       Request_lightOn* c = new Request_lightOn();
       c->location = 2;
+      c->power = random(0, 255);
       requestQueue.queue.push(c);
-      p("  >    %s, %d\n", "Request_lightOn", c->location);
+      p("  >    %s, %d, %d\n", "Request_lightOn", c->location, c->power);
     }
     else if (random(100)<25) {
       Request_lightOff* c = new Request_lightOff();
@@ -126,7 +121,7 @@ void loop(void) {
       requestQueue.queue.push(c);
       p("  >    %s, %d\n", "Request_lightOff", c->location);
     }
-    else {
+    else if (random(100)<25) {
       Request_getSysInfo* c = new Request_getSysInfo();
       requestQueue.queue.push(c);
       p("  >    %s\n", "Request_getSysInfo");
