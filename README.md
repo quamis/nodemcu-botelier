@@ -1,45 +1,54 @@
 # nodemcu-botelier
 
+Transform you NodeMcu device into a sort of _butler_, taking commands from a master, and executing them in order.
+
+Name comes from https://en.wikipedia.org/wiki/Butler
+
 The dev plan:
+---
 	- connect to local wifi
     - connect to master, getCommands
-    - execute commands from queue
+    - execute commands
+    - send responses
 	
 
-The plan:
-    - heartbeat
-    - list temperatures
-    - list triggers
-    - list lights
-    - list wifi's
-    - getStatus (internal status)
+Possible requests:
+----
+    [x] heartbeat
+    [ ] list temperatures
+    [ ] list triggers
+    [ ] list lights
+    [x] list wifi's
+    [ ] getStatus (internal status)
         - IP
         - uptime
         - command counts
-    - setStatus (internal status)
-    - trigger (1,2,3)
-    - sleep X secs
-    - reboot
-    - watchdog
+        - free memory
+    [ ] setStatus? (internal status)
+    [ ] trigger (1,2,3)
+    [x] sleep X secs
+    [ ] reboot
+    [ ] watchdog for main server
         - arm
         - rearm
         - disarm
-    - flush queue
+    [ ] flush queue
     
     
+----
+My used pins:
 
-The pins:
-    [3p] sensor lumina 
-        - 1 senzor strada
-        - 1 sensor parcare vecini
+    [3p] senzor lumina 
+        - 1 senzor in strada
+        - 1 sensor in parcare 
         - 1 senzor in living
-    [3p] trigger 
+    [3p] triggers (relee)
         - bec afara
         - router
         - BPI (watchdog)
         
     [1p] temperatures
-    [1p] sensor usa intrare
+    [1p] senzor usa
     [1p] interrupt for wakeup
-    =9 ??? cam multi:)
+     =9p ... cam multi:)
     
