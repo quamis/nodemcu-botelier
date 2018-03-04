@@ -24,6 +24,16 @@ class Command_getSysInfo : public Command {
     void execute(ResponseQueue responseQueue);
 };
 
+
+class Command_wait : public Command {
+  public:
+    using Command::execute;
+    void execute(ResponseQueue responseQueue);
+
+    Request_wait* rq = NULL;
+};
+
+
 class Command_lightOn : public Command {
   public:
     using Command::execute;

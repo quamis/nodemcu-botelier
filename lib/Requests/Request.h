@@ -36,6 +36,14 @@ class Request_getSysInfo : public Request {
     Request_getSysInfo () { request = _rq_GetSysInfo_; };
 };
 
+#define _rq_wait_ 0x0003
+class Request_wait : public Request {
+  public:
+    Request_wait () { request = _rq_wait_; };
+
+    float duration = 0.0;  // seconds
+};
+
 
 #define _rq_LightOn_ 0x0011
 class Request_lightOn : public Request {
@@ -43,6 +51,7 @@ class Request_lightOn : public Request {
     Request_lightOn () { request = _rq_LightOn_; };
 
     uint location = 0;
+    uint8 power = 100;  // percent
 };
 
 #define _rq_LightOff_ 0x0012

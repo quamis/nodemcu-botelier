@@ -28,6 +28,14 @@ void RequestQueue::executeQueue(ResponseQueue responseQueue) {
             }
             break;
 
+            case _rq_wait_: {
+                Command_wait c;
+                c.rq = reinterpret_cast<Request_wait*>(queue.front());
+                c.execute(responseQueue);
+                p("  <  %s\n", "Command_wait");
+            }
+            break;
+
             case _rq_LightOn_: {
                 Command_lightOn c;
                 c.rq = reinterpret_cast<Request_lightOn*>(queue.front());
@@ -60,5 +68,15 @@ void RequestQueue::executeQueue(ResponseQueue responseQueue) {
 
         delete queue.front();
         queue.pop();
+        /*
+        Remember that there is a lot of code that needs to run on the chip besides the sketch 
+        when WiFi is connected. WiFi and TCP/IP libraries get a chance to handle any pending 
+        events each time the loop() function completes, OR when delay is called. 
+        If you have a loop somewhere in your sketch that takes a lot of time (>50ms) without 
+        calling delay, you might consider adding a call to delay function to keep the WiFi 
+        stack running smoothly.
+        There is also a yield() function which is equivalent to delay(0)
+        */
+        yield();
     };
 }

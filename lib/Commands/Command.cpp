@@ -37,6 +37,12 @@ void Command_getSysInfo::execute(ResponseQueue responseQueue) {
     responseQueue.queue.push(rs);
 }
 
+
+void Command_wait::execute(ResponseQueue responseQueue) {
+    delay(rq->duration*1000);
+}
+
+
 void Command_lightOn::execute(ResponseQueue responseQueue) {
     switch (rq->location) {
         case 1:
