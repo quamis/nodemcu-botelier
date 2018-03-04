@@ -20,7 +20,7 @@ class RequestQueue {
     uint commandsExecuted = 0;
   public:
     std::queue<Request *> queue;
-    void executeQueue(ResponseQueue responseQueue);
+    void executeQueue(ResponseQueue *responseQueue);
 };
 
 

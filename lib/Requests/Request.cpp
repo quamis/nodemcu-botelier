@@ -6,7 +6,7 @@
 #include "Command.h"
 #include <string.h>
 
-void RequestQueue::executeQueue(ResponseQueue responseQueue) {
+void RequestQueue::executeQueue(ResponseQueue *responseQueue) {
     int executedItems = 0;
 
     p("  <execute queue, items: %d\n", queue.size());

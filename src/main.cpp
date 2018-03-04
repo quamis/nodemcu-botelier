@@ -55,35 +55,31 @@ void setup(void) {
 
 void loop(void) {
   delay(100);
-
-  
-
-
   p("\nLooping, ram: %d\n", system_get_free_heap_size());
+
 
   if (!requestQueue.queue.empty()) {
     p("Process queue, %d requests\n", requestQueue.queue.size());
-    requestQueue.executeQueue(responseQueue);
+    requestQueue.executeQueue(&responseQueue);
+    p("Processed queue, %d responses\n", responseQueue.queue.size());
   }
 
   if (!responseQueue.queue.empty()) {
-    /*
     String response;
+    p("------------------");
     while (!responseQueue.queue.empty()) {
-      Response &rs = responseQueue.queue.front();
-      response+= rs.toJsop("    +n();
+      Response *rs = responseQueue.queue.front();
+      response+= rs->toJson();
 
-      p(">> %s\n", response.c_str());
-      
       responseQueue.queue.pop();
+      delete rs;
     }
-    */
+    p(">>>>    %s\n", response.c_str());
   }
 
 
   // fill in request queue for next iteration
   // p("+push new elements\n");
-  
   while(random(100)<30) {
     if (random(100)<25) {
       Request_getHeartbeat* c = new Request_getHeartbeat();
