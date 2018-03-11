@@ -10,19 +10,24 @@ String Response::toJson() {
 
 String Response_heartbeat::toJson() {
     String s;
+    s+= "{heartbeat: {";
+    s+= fmt("  commandsExecuted: %d", commandsExecuted);
+    s+= "}}";
     return s;
 }
 
 String Response_sysInfo::toJson() {
-    // fill in something in the reponse
-    // Command::execute(responseQueue);
     String s;
+    s+= "{sysInfo: {";
+    s+= fmt("  time: %d", time);
+    s+= fmt(", free_heap_size: %d", free_heap_size);
+    s+= "}}";
     return s;
 }
 
 String Response_wifiList::toJson() {
     String s;
-    s+= "{networks: {";
+    s+= "{wifiList: { networks: [";
     String sep = "";
     while (!networks.empty()) {
         String sap;
@@ -43,7 +48,7 @@ String Response_wifiList::toJson() {
 
         sep=", ";
     }
-    s+="}";
+    s+="]}}";
 
     /*
     p("Command_getWifiList: %s(%s), %d dBm, %s/ ch%d, %s\n"
@@ -57,4 +62,3 @@ String Response_wifiList::toJson() {
     */
     return s;
 }
-// TODO

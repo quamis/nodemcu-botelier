@@ -10,11 +10,6 @@ class Response {
   public:
     virtual String toJson();
     virtual ~Response() {};
-  
-  protected:
-    String jsKeyStr(char* key, char* str) {
-      return String(key) + "\"" + String(str) + "\"";
-    }
 };
 
 class Response_heartbeat : public Response {
