@@ -2,14 +2,26 @@
 #include <queue>
 #include <stdarg.h>
 #include <string.h>
+#include <config.h>
 
 #include "Utils.h"
 #include "Command.h"
 #include "Response.h"
 #include "Request.h"
 
-#define WIFI_SSID "xxxx";
-#define WIFI_PASSWORD "xxxx";
+#include <ESP8266WiFi.h>
+#include <WiFiClientSecure.h>
+
+/*
+#define MASTER_HOST "example.com"
+#define MASTER_PORT 443
+#define MASTER_URL ".../NodeMcuBoutelier-master/.."
+// Use web browser to view and copy SHA1 fingerprint of the certificate
+#define MASTER_FINGERPRINT "11 12 13 14 11 12 13 14 11 12 13 14 11 12 13 14 11 12 13 14"
+
+#define WIFI_SSID "xxxxxx"
+#define WIFI_PASSWORD "xxxxxx"
+*/
 
 extern "C" {
   #include "user_interface.h"
@@ -36,6 +48,7 @@ ResponseQueue responseQueue;
 
 void setup(void) {
   Serial.begin(921600);
+  delay(5000);
 
   // name comes from https://en.wikipedia.org/wiki/Butler
   p("************************************************************\n");
@@ -51,10 +64,56 @@ void setup(void) {
  
   // initialize random seed 
   randomSeed(analogRead(D0));
+
+  /*
+  p("connecting to %s\n", WIFI_SSID);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    p(".");
+  }
+  p(" done\n");
+  // local address: WiFi.localIP();
+  p("LocalIP: %s\n", WiFi.localIP().toString().c_str());
+  
+  // Use WiFiClientSecure class to create TLS connection
+  WiFiClientSecure client;
+  if (!client.connect(MASTER_HOST, MASTER_PORT)) {
+    p("connection failed\n");
+    return;
+  }
+ 
+  if (client.verify(MASTER_FINGERPRINT, MASTER_HOST)) {
+    p("certificate matches\n");
+  } 
+  else {
+    p("certificate doesn't match\n");
+  }
+
+  client.print(String("POST ") + MASTER_URL + " HTTP/1.1\r\n" +
+               "Host: " + MASTER_HOST + "\r\n" +
+               "User-Agent: Node-Boutelier v1\r\n" +
+               "Connection: close\r\nsdasdas\r\n");
+
+  p("request sent\n");
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    p(" << %s\n", line.c_str());
+    if (line == "\r") {
+      p("\nheaders received\n\n");
+      break;
+    }
+  }
+  String line = client.readStringUntil('\n');
+  p("<< %s\n", line.c_str());
+
+  p("looping\n");
+  */
 }
 
 void loop(void) {
-  delay(100);
+  delay(5000);
   p("\nLooping, ram: %d\n", system_get_free_heap_size());
 
 
